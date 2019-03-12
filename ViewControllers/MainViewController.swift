@@ -114,5 +114,16 @@ class MainViewController: UIViewController {
   @IBAction func batchDeletePressed(_ sender: Any) {
     batchDeleteStations()
   }
-  //jkdfjlkdjfl
+  
+  @IBAction func stationEditingDidBegin(_ sender: Any) {
+    performSegue(withIdentifier: "segueToSelectStation", sender: self)
+  }
+  
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let destination = segue.destination as? SelectStationTableTableViewController {
+      destination.managedContext = managedContext
+    }
+  }
+  
 }
