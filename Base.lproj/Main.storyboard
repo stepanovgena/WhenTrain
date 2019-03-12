@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="WhenTrain" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zyj-ac-GEj">
+                                <rect key="frame" x="146" y="318.5" width="83" height="30"/>
+                                <state key="normal" title="Get stations"/>
+                                <connections>
+                                    <action selector="getStationsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D6o-dt-6V7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="93F-xO-aTm">
+                                <rect key="frame" x="115.5" y="401" width="144" height="30"/>
+                                <state key="normal" title="Fetch from CoreData"/>
+                                <connections>
+                                    <action selector="fetchPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yVD-zO-rio"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8y-VV-4CV" customClass="CircleProgressIndicator" customModule="WhenTrain" customModuleProvider="target">
+                                <rect key="frame" x="172.5" y="463" width="30" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="2Xg-58-UNp"/>
+                                    <constraint firstAttribute="width" constant="30" id="nlM-pA-z3A"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wie-Yg-dPt">
+                                <rect key="frame" x="90" y="536" width="195" height="30"/>
+                                <state key="normal" title="Batch delete from Core Data"/>
+                                <connections>
+                                    <action selector="batchDeletePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UR1-aG-7mc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="r8y-VV-4CV" firstAttribute="top" secondItem="93F-xO-aTm" secondAttribute="bottom" constant="32" id="Je4-mx-DFu"/>
+                            <constraint firstItem="r8y-VV-4CV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="UdV-Sg-12y"/>
+                            <constraint firstItem="wie-Yg-dPt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bUe-kh-jyc"/>
+                            <constraint firstItem="93F-xO-aTm" firstAttribute="top" secondItem="Zyj-ac-GEj" secondAttribute="bottom" constant="52.5" id="eho-09-hgw"/>
+                            <constraint firstItem="Zyj-ac-GEj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qxf-YS-gEb"/>
+                            <constraint firstItem="wie-Yg-dPt" firstAttribute="top" secondItem="r8y-VV-4CV" secondAttribute="bottom" constant="43" id="sGH-7w-4pu"/>
+                            <constraint firstItem="93F-xO-aTm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="u77-Mr-gQZ"/>
+                            <constraint firstItem="Zyj-ac-GEj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="xen-kQ-Eno"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="circleProgressIndicator" destination="r8y-VV-4CV" id="Ut6-oh-N7A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
