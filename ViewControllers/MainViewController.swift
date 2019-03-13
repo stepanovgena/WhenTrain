@@ -19,12 +19,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   var fetchedResultsController: NSFetchedResultsController<Station>!
   var stationsListLastUpdate: Int32 = 0
   var shouldSegueToStations = true
+  var stationSwitcher = StationSwitcher.none
   
   override func viewDidLoad() {
     super.viewDidLoad()
     fromStationTextField.delegate = self
     fetchStationData()
     circleProgressIndicator.isHidden = true
+    
   }
   
   private func updateStations() {
@@ -105,20 +107,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
       print("Fetching error: \(error), \(error.userInfo)")
     }
     print("sections in fetched results:")
-    print(fetchedResultsController.sections?.count)
+    print(fetchedResultsController.sections?.count as Any)
   }
-  
-  @IBAction func fillFromStation(segue: UIStoryboardSegue) {
-//    if segue.identifier == "stationSelected" {
-//      //shouldSegueToStations = false
-//      let availableStationsViewController = segue.source as! SelectStationTableTableViewController
-//
-//        let fromStation = availableStationsViewController.selectedFromStation
-//      fromStationTextField.text = fromStation?.stationTitle
-    
-//    }
-  }
-  
   
   @IBAction func getStationsPressed(_ sender: Any) {
     updateStations()
@@ -132,18 +122,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     batchDeleteStations()
   }
   
-//  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-//    if (identifier == "segueToSelectStation") {
-//    return shouldSegueToStations
-//    }
-//    return true
-//  }
   @IBAction func fromStationTouchDown(_ sender: Any) {
+    stationSwitcher = .from
     performSegue(withIdentifier: "selectFromStationSegue", sender: self)
   }
   
-
   @IBAction func toStationTouchDown(_ sender: Any) {
+    stationSwitcher = .to
     performSegue(withIdentifier: "selectToStationSegue", sender: self)
   }
   
@@ -151,17 +136,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     return false
   }
   
-  
-  
-  
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let destination = segue.destination as? SelectStationTableTableViewController {
       destination.managedContext = managedContext
+      
+      switch stationSwitcher {
+      case .from: destination.stationSwitcher = .from
+      case .to: destination.stationSwitcher = .to
+      case .none: return
+      }
     }
   }
   
   @IBAction func unwindToMain(unwindSegue: UIStoryboardSegue) {
   
   }
-  
 }
