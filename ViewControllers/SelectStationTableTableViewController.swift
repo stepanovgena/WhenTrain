@@ -16,11 +16,19 @@ class SelectStationTableTableViewController: UITableViewController, UISearchBarD
   
   var managedContext: NSManagedObjectContext!
   var fetchedResultsController: NSFetchedResultsController<Station>!
+  var selectedFromStation: Station!
+//  {
+//    didSet(value)  {
+//      print ("selectedFromStation did set to \(String(describing: value.stationTitle))")
+//    }
+//  }
   
     override func viewDidLoad() {
         super.viewDidLoad()
       
       fetchStationData()
+      
+      selectedFromStation = fetchedResultsController.object(at: IndexPath(row: 0, section: 0))
       
       searchBar.delegate = self
 
@@ -60,8 +68,14 @@ class SelectStationTableTableViewController: UITableViewController, UISearchBarD
   
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     let sectionInfo = fetchedResultsController.sections?[section]
-    print(sectionInfo?.name)
     return sectionInfo?.name
+  }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    selectedFromStation = fetchedResultsController.object(at: indexPath)
+    print("indexPath: \(indexPath)")
+    print(selectedFromStation.stationTitle)
+    performSegue(withIdentifier: "unwindToMain", sender: self)
   }
   
 
@@ -122,8 +136,14 @@ class SelectStationTableTableViewController: UITableViewController, UISearchBarD
       } catch let error as NSError {
         print("Could not fetch. \(error)")
       }
-    }
+    } else { fetchStationData() }
     stationsTableView.reloadData()
+  }
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let mainViewController = segue.destination as? MainViewController {
+      mainViewController.fromStationTextField.text = selectedFromStation.stationTitle
+    }
   }
 
 }

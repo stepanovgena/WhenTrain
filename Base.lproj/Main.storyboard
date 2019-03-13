@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pqo-hG-NoC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -48,31 +48,34 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4aR-F1-bhh">
-                                <rect key="frame" x="32" y="52" width="44" height="21"/>
+                                <rect key="frame" x="32" y="96" width="44" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFg-A7-8kV">
-                                <rect key="frame" x="92" y="47.5" width="251" height="30"/>
+                                <rect key="frame" x="92" y="91.5" width="251" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="stationEditingDidBegin:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="XDf-aO-jdP"/>
+                                    <action selector="fromStationTouchDown:" destination="BYZ-38-t0r" eventType="touchDown" id="wTY-w2-nfp"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gs-0U-vDw">
-                                <rect key="frame" x="32" y="117" width="24" height="21"/>
+                                <rect key="frame" x="32" y="161" width="24" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RcT-wC-lo1">
-                                <rect key="frame" x="92" y="112.5" width="251" height="30"/>
+                                <rect key="frame" x="92" y="156.5" width="251" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="toStationTouchDown:" destination="BYZ-38-t0r" eventType="touchDown" id="1pG-1O-xUZ"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -98,14 +101,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="67U-7g-dst"/>
                     <connections>
                         <outlet property="circleProgressIndicator" destination="r8y-VV-4CV" id="Ut6-oh-N7A"/>
-                        <segue destination="r7f-Gz-d0Y" kind="show" identifier="segueToSelectStation" id="0KL-Gw-TJ6"/>
+                        <outlet property="fromStationTextField" destination="mFg-A7-8kV" id="41K-zq-RPD"/>
+                        <outlet property="toStationTextField" destination="RcT-wC-lo1" id="OSG-6N-bPK"/>
+                        <segue destination="r7f-Gz-d0Y" kind="show" identifier="selectFromStationSegue" id="0KL-Gw-TJ6"/>
+                        <segue destination="r7f-Gz-d0Y" kind="show" identifier="selectToStationSegue" id="9xz-FG-Ua5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="56.799999999999997" y="82.3088455772114"/>
+            <point key="canvasLocation" x="996" y="82.3088455772114"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="f1f-vP-UPn">
@@ -120,7 +127,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="poc-PW-c07" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1625" y="82"/>
+            <point key="canvasLocation" x="2564" y="81.409295352323838"/>
         </scene>
         <!--Select Station Table Table View Controller-->
         <scene sceneID="UQ8-Zm-DjJ">
@@ -168,11 +175,34 @@
                     <connections>
                         <outlet property="searchBar" destination="L9q-Rz-4GI" id="Erd-mk-AQR"/>
                         <outlet property="stationsTableView" destination="XCI-3j-R3B" id="sc8-sX-xNh"/>
+                        <segue destination="1kU-nH-0Hg" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithUnwindSegue:" id="zx1-89-Xz3"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B8q-iv-lUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1kU-nH-0Hg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="874" y="82"/>
+            <point key="canvasLocation" x="1812" y="81.409295352323838"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="DYW-Ek-a0n">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pqo-hG-NoC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="7wA-Q7-6ts">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="QwZ-oq-pDd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kC7-kV-KSr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="56.799999999999997" y="82.3088455772114"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="9xz-FG-Ua5"/>
+    </inferredMetricsTieBreakers>
 </document>

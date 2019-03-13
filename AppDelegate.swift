@@ -18,11 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     
-    guard let vc = window?.rootViewController as? MainViewController else {
+    guard let navigationController = window?.rootViewController as? UINavigationController else {
       return true
     }
+    guard let mainViewController = navigationController.viewControllers[0] as? MainViewController else { return true }
     
-    vc.managedContext = persistentContainer.viewContext
+    mainViewController.managedContext = persistentContainer.viewContext
     return true
   }
 

@@ -9,15 +9,21 @@
 import UIKit
 import CoreData
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITextFieldDelegate {
 
   @IBOutlet weak var circleProgressIndicator: CircleProgressIndicator!
+  @IBOutlet weak var fromStationTextField: UITextField!
+  @IBOutlet weak var toStationTextField: UITextField!
   
   var managedContext: NSManagedObjectContext!
+  var fetchedResultsController: NSFetchedResultsController<Station>!
   var stationsListLastUpdate: Int32 = 0
+  var shouldSegueToStations = true
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    fromStationTextField.delegate = self
+    fetchStationData()
     circleProgressIndicator.isHidden = true
   }
   
@@ -91,15 +97,26 @@ class MainViewController: UIViewController {
     let sort = NSSortDescriptor(key: #keyPath(Station.settlementTitle), ascending: true)
     fetchRequest.sortDescriptors = [sort]
     
-    let fetchResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: nil)
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: nil)
     
     do {
-      try fetchResultsController.performFetch()
+      try fetchedResultsController.performFetch()
     } catch let error as NSError {
       print("Fetching error: \(error), \(error.userInfo)")
     }
     print("sections in fetched results:")
-    print(fetchResultsController.sections?.count)
+    print(fetchedResultsController.sections?.count)
+  }
+  
+  @IBAction func fillFromStation(segue: UIStoryboardSegue) {
+//    if segue.identifier == "stationSelected" {
+//      //shouldSegueToStations = false
+//      let availableStationsViewController = segue.source as! SelectStationTableTableViewController
+//
+//        let fromStation = availableStationsViewController.selectedFromStation
+//      fromStationTextField.text = fromStation?.stationTitle
+    
+//    }
   }
   
   
@@ -115,15 +132,36 @@ class MainViewController: UIViewController {
     batchDeleteStations()
   }
   
-  @IBAction func stationEditingDidBegin(_ sender: Any) {
-    performSegue(withIdentifier: "segueToSelectStation", sender: self)
+//  override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+//    if (identifier == "segueToSelectStation") {
+//    return shouldSegueToStations
+//    }
+//    return true
+//  }
+  @IBAction func fromStationTouchDown(_ sender: Any) {
+    performSegue(withIdentifier: "selectFromStationSegue", sender: self)
   }
+  
+
+  @IBAction func toStationTouchDown(_ sender: Any) {
+    performSegue(withIdentifier: "selectToStationSegue", sender: self)
+  }
+  
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    return false
+  }
+  
+  
   
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let destination = segue.destination as? SelectStationTableTableViewController {
       destination.managedContext = managedContext
     }
+  }
+  
+  @IBAction func unwindToMain(unwindSegue: UIStoryboardSegue) {
+  
   }
   
 }
