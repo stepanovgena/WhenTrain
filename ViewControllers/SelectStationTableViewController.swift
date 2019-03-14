@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SelectStationTableTableViewController: UITableViewController, UISearchBarDelegate {
+class SelectStationTableViewController: UITableViewController, UISearchBarDelegate {
  
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet var stationsTableView: UITableView!
@@ -102,9 +102,14 @@ class SelectStationTableTableViewController: UITableViewController, UISearchBarD
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let mainViewController = segue.destination as? MainViewController {
       switch stationSwitcher {
-      case .from: mainViewController.fromStationTextField.text = selectedStation.stationTitle
-      case .to: mainViewController.toStationTextField.text = selectedStation.stationTitle
-      case .none: return
+      case .from:
+        mainViewController.fromStationTextField.text = selectedStation.stationTitle
+        mainViewController.fromStationCode = selectedStation.stationCode
+      case .to:
+        mainViewController.toStationTextField.text = selectedStation.stationTitle
+        mainViewController.toStationCode = selectedStation.stationCode
+      case .none:
+        return
       }
     }
   }

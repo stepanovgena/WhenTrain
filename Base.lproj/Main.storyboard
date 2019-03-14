@@ -77,12 +77,21 @@
                                     <action selector="toStationTouchDown:" destination="BYZ-38-t0r" eventType="touchDown" id="1pG-1O-xUZ"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gyu-6E-tGA">
+                                <rect key="frame" x="69" y="582" width="237" height="30"/>
+                                <state key="normal" title="Get timetable for selected stations"/>
+                                <connections>
+                                    <action selector="getTimetablePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bn6-vI-dPb"/>
+                                    <segue destination="RYL-Ca-1bS" kind="show" identifier="toTimetable" id="9Ts-Q5-Ai9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="width" secondItem="mFg-A7-8kV" secondAttribute="width" id="12M-y0-SkZ"/>
                             <constraint firstItem="4aR-F1-bhh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="6nS-MP-QWi"/>
                             <constraint firstItem="4aR-F1-bhh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="7ZH-g1-g1j"/>
+                            <constraint firstItem="Gyu-6E-tGA" firstAttribute="top" secondItem="wie-Yg-dPt" secondAttribute="bottom" constant="16" id="CuU-mJ-H56"/>
                             <constraint firstItem="r8y-VV-4CV" firstAttribute="top" secondItem="93F-xO-aTm" secondAttribute="bottom" constant="32" id="Je4-mx-DFu"/>
                             <constraint firstItem="1gs-0U-vDw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="KeM-x7-wMZ"/>
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1gs-0U-vDw" secondAttribute="trailing" constant="8" symbolic="YES" id="MBU-yH-WNi"/>
@@ -94,6 +103,7 @@
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="centerY" secondItem="1gs-0U-vDw" secondAttribute="centerY" id="eB0-Lq-Z8p"/>
                             <constraint firstItem="93F-xO-aTm" firstAttribute="top" secondItem="Zyj-ac-GEj" secondAttribute="bottom" constant="52.5" id="eho-09-hgw"/>
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="leading" secondItem="mFg-A7-8kV" secondAttribute="leading" id="fL0-P5-Qee"/>
+                            <constraint firstItem="Gyu-6E-tGA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kwV-cm-CPF"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mFg-A7-8kV" secondAttribute="trailing" constant="32" id="pIN-cJ-jFk"/>
                             <constraint firstItem="Zyj-ac-GEj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qxf-YS-gEb"/>
                             <constraint firstItem="wie-Yg-dPt" firstAttribute="top" secondItem="r8y-VV-4CV" secondAttribute="bottom" constant="43" id="sGH-7w-4pu"/>
@@ -115,10 +125,10 @@
             </objects>
             <point key="canvasLocation" x="996" y="82.3088455772114"/>
         </scene>
-        <!--Select Station Table Table View Controller-->
+        <!--Select Station Table View Controller-->
         <scene sceneID="UQ8-Zm-DjJ">
             <objects>
-                <tableViewController id="r7f-Gz-d0Y" customClass="SelectStationTableTableViewController" customModule="WhenTrain" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="r7f-Gz-d0Y" customClass="SelectStationTableViewController" customModule="WhenTrain" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="XCI-3j-R3B">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -168,7 +178,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B8q-iv-lUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1kU-nH-0Hg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1812" y="81.409295352323838"/>
+            <point key="canvasLocation" x="1991" y="-122"/>
+        </scene>
+        <!--Timetable Table View Controller-->
+        <scene sceneID="FHD-A3-V8I">
+            <objects>
+                <tableViewController id="RYL-Ca-1bS" customClass="TimetableTableViewController" customModule="WhenTrain" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="79A-aw-nwX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="segmentCell" id="Dwm-F3-Yjd">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Dwm-F3-Yjd" id="cVi-5n-Sc5">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="RYL-Ca-1bS" id="ZSX-3u-ciO"/>
+                            <outlet property="delegate" destination="RYL-Ca-1bS" id="wBh-Pn-CEZ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3C0-qq-aOS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2867" y="419"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="DYW-Ek-a0n">

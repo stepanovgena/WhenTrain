@@ -18,8 +18,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   var managedContext: NSManagedObjectContext!
   var fetchedResultsController: NSFetchedResultsController<Station>!
   var stationsListLastUpdate: Int32 = 0
-  var shouldSegueToStations = true
   var stationSwitcher = StationSwitcher.none
+  var fromStationCode: String?
+  var toStationCode: String?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -33,9 +34,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     circleProgressIndicator.isHidden = false
     
-    let url = URL(string: "https://api.rasp.yandex.net/v3.0/stations_list/?apikey=b361b0fc-e231-41be-ae59-ea74f6f9bafa&lang=ru_RU&format=json")!
-    
-    URLSession.shared.dataTask(with: url) { data, response, error in
+    let configuration = URLSessionConfiguration.default
+    let session = URLSession(configuration: configuration)
+    var urlConstructor = URLComponents()
+    urlConstructor.scheme = "https"
+    urlConstructor.host = "api.rasp.yandex.net"
+    urlConstructor.path = "/v3.0/stations_list"
+    urlConstructor.queryItems = [
+      URLQueryItem(name: "apikey", value: "b361b0fc-e231-41be-ae59-ea74f6f9bafa"),
+      URLQueryItem(name: "lang", value: "ru_RU"),
+      URLQueryItem(name: "format", value: "json")
+    ]
+        
+    let task = session.dataTask(with: urlConstructor.url!) { data, response, error in
       
       guard let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return }
       
@@ -79,7 +90,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
       }
      print("station download completed")
 
-      }.resume()
+      }
+      task.resume()
   }
   
   private func batchDeleteStations() {
@@ -110,6 +122,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     print(fetchedResultsController.sections?.count as Any)
   }
   
+  
+  
   @IBAction func getStationsPressed(_ sender: Any) {
     updateStations()
   }
@@ -121,6 +135,16 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   @IBAction func batchDeletePressed(_ sender: Any) {
     batchDeleteStations()
   }
+  
+  @IBAction func getTimetablePressed(_ sender: Any) {
+   
+//    if (fromStationCode != nil && toStationCode != nil) {
+//      requestTimetableBetweenStations(fromStationCode: fromStationCode!, toStationCode: toStationCode!)
+//  }
+    performSegue(withIdentifier: "toTimetable", sender: self)
+    
+  }
+  
   
   @IBAction func fromStationTouchDown(_ sender: Any) {
     stationSwitcher = .from
@@ -137,7 +161,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if let destination = segue.destination as? SelectStationTableTableViewController {
+    if (segue.identifier == "selectFromStationSegue" || segue.identifier == "selectToStationSegue") {
+    if let destination = segue.destination as? SelectStationTableViewController {
       destination.managedContext = managedContext
       
       switch stationSwitcher {
@@ -146,6 +171,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
       case .none: return
       }
     }
+    } else if (segue.identifier == "toTimetable" && fromStationCode != nil && toStationCode != nil) {
+      if let destination = segue.destination as? TimetableTableViewController {
+        destination.fromStationCode = fromStationCode
+        destination.toStationCode = toStationCode
+      }
+    }
+      
   }
   
   @IBAction func unwindToMain(unwindSegue: UIStoryboardSegue) {

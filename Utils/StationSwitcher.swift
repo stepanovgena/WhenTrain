@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+/** Enables using only one tableView to pick both From and To stations by distinguishing between them */
 enum StationSwitcher {
   case none
   case from
