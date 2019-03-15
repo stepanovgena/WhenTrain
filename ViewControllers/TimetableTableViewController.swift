@@ -82,6 +82,33 @@ class TimetableTableViewController: UITableViewController {
     }
     task.resume()
   }
+  
+  private func getDurationString(beginTimeSeconds: Double, endTimeSeconds: Double) -> String {
+    var durationString: String = ""
+    
+    let durationMinutesInt = Int(endTimeSeconds - beginTimeSeconds)/60
+    
+    if (durationMinutesInt < 60) {
+      durationString = "\(durationMinutesInt) мин."
+    } else {
+      let hours: Int = durationMinutesInt/60
+      let minutes: Int = durationMinutesInt%60
+      durationString = "\(hours) ч. \(minutes) мин."
+    }
+    return durationString
+  }
+  
+  private func convenienceTimeStringFormat(durationMinutesInt: Int) -> String {
+     var durationString: String = ""
+    if (durationMinutesInt < 60) {
+      durationString = "\(durationMinutesInt) мин."
+    } else {
+      let hours: Int = durationMinutesInt/60
+      let minutes: Int = durationMinutesInt%60
+      durationString = "\(hours) ч. \(minutes) мин."
+    }
+    return durationString
+  }
 
     // MARK: - Table view data source
 
@@ -110,11 +137,12 @@ class TimetableTableViewController: UITableViewController {
         let currentTime = dateFormatter.date(from: currentTimeString)
         departureTimeFormattedSince1970 = departureTime?.timeIntervalSince1970 as! Double
         let currentTimeFormattedSince1970 = currentTime?.timeIntervalSince1970 as! Double
-        let waitingTimeMinutes = Int(departureTimeFormattedSince1970! - currentTimeFormattedSince1970)/60
+        let waitingTimeMinutesInt = Int(departureTimeFormattedSince1970! - currentTimeFormattedSince1970)/60
+        let waitingTimeString = getDurationString(beginTimeSeconds: currentTimeFormattedSince1970, endTimeSeconds: departureTimeFormattedSince1970!)
         
-        if (waitingTimeMinutes > 0) {
-        cell.waitingTimeLabel.text = "через \(String(waitingTimeMinutes)) мин."
-        } else if (waitingTimeMinutes == 0) {
+        if (waitingTimeMinutesInt > 0) {
+        cell.waitingTimeLabel.text = "через \(waitingTimeString)"
+        } else if (waitingTimeMinutesInt == 0) {
           cell.waitingTimeLabel.text = "сейчас"
         } else {
           cell.waitingTimeLabel.text = ""
@@ -131,7 +159,7 @@ class TimetableTableViewController: UITableViewController {
       if (arrivalTimeFormattedSince1970 != nil && departureTimeFormattedSince1970 != nil) {
        var timeToTravelMin = Int(arrivalTimeFormattedSince1970! - departureTimeFormattedSince1970!)/60
         if timeToTravelMin > 0 {
-        cell.durationLabel.text = "\(String(timeToTravelMin)) мин."
+        cell.durationLabel.text = convenienceTimeStringFormat(durationMinutesInt: timeToTravelMin)
         } else {
           let midnightFormatSince1970PlusSec = dateFormatter.date(from: "00:00:01")?.timeIntervalSince1970
           let midnightFormatSince1970MinusSec = dateFormatter.date(from: "23:59:59")?.timeIntervalSince1970
@@ -140,13 +168,12 @@ class TimetableTableViewController: UITableViewController {
           let timeToTravelAfterMidnight = Int(arrivalTimeFormattedSince1970! - midnightFormatSince1970PlusSec!)/60
         
           timeToTravelMin = timeToTravelBeforeMidnight + timeToTravelAfterMidnight
-          cell.durationLabel.text = String(timeToTravelMin)
+          cell.durationLabel.text = convenienceTimeStringFormat(durationMinutesInt: timeToTravelMin)
         }
       }
       if let thread = segmentsArray?[indexPath.row]["thread"] as? [String : Any] {
         cell.threadTitleLabel.text = thread["title"] as? String
       }
-
         return cell
     }
 }
