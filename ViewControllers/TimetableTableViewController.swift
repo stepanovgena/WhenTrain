@@ -18,6 +18,8 @@ class TimetableTableViewController: UITableViewController {
   var backgroundView: UIView?
   var circleProgressIndicator: CircleProgressIndicator?
   let dateFormatter = DateFormatter()
+  var departureTimeFormattedSince1970: Double?
+  var arrivalTimeFormattedSince1970: Double?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,15 +101,16 @@ class TimetableTableViewController: UITableViewController {
         
         let departureTime = dateFormatter.date(from: departureTimeString)
         let departureTimeConvertedToString = dateFormatter.string(from: departureTime!)
-        //print(departureTimeConvertedToString)
-  
-        cell.departureTimeLabel.text = departureTimeString
+        
+        let trimmedDepartureTimeString = String(departureTimeString.prefix(5))
+       
+        cell.departureTimeLabel.text = trimmedDepartureTimeString
         let currentTimeDate = Date()
         let currentTimeString = dateFormatter.string(from: currentTimeDate)
         let currentTime = dateFormatter.date(from: currentTimeString)
-        let departureTimeFormattedSince1970 = departureTime?.timeIntervalSince1970 as! Double
+        departureTimeFormattedSince1970 = departureTime?.timeIntervalSince1970 as! Double
         let currentTimeFormattedSince1970 = currentTime?.timeIntervalSince1970 as! Double
-        let waitingTimeMinutes = Int(departureTimeFormattedSince1970 - currentTimeFormattedSince1970)/60
+        let waitingTimeMinutes = Int(departureTimeFormattedSince1970! - currentTimeFormattedSince1970)/60
         
         if (waitingTimeMinutes > 0) {
         cell.waitingTimeLabel.text = "через \(String(waitingTimeMinutes)) мин."
@@ -116,13 +119,34 @@ class TimetableTableViewController: UITableViewController {
         } else {
           cell.waitingTimeLabel.text = ""
         }
-       if let arrivalTimeString = segmentsArray?[indexPath.row]["arrival"] as? String {
-        cell.arrivalTimeLabel.text = arrivalTimeString
+      }
+      
+      if let arrivalTimeString = segmentsArray?[indexPath.row]["arrival"] as? String {
+        let trimmedArrivalTimeString = String(arrivalTimeString.prefix(5))
+        cell.arrivalTimeLabel.text = trimmedArrivalTimeString
+        let arrivalTimeDate = dateFormatter.date(from: arrivalTimeString)
+        arrivalTimeFormattedSince1970 = arrivalTimeDate?.timeIntervalSince1970 as! Double
+      }
+      
+      if (arrivalTimeFormattedSince1970 != nil && departureTimeFormattedSince1970 != nil) {
+       var timeToTravelMin = Int(arrivalTimeFormattedSince1970! - departureTimeFormattedSince1970!)/60
+        if timeToTravelMin > 0 {
+        cell.durationLabel.text = "\(String(timeToTravelMin)) мин."
+        } else {
+          let midnightFormatSince1970PlusSec = dateFormatter.date(from: "00:00:01")?.timeIntervalSince1970
+          let midnightFormatSince1970MinusSec = dateFormatter.date(from: "23:59:59")?.timeIntervalSince1970
+          
+          let timeToTravelBeforeMidnight = Int(midnightFormatSince1970MinusSec! - departureTimeFormattedSince1970!)/60
+          let timeToTravelAfterMidnight = Int(arrivalTimeFormattedSince1970! - midnightFormatSince1970PlusSec!)/60
+        
+          timeToTravelMin = timeToTravelBeforeMidnight + timeToTravelAfterMidnight
+          cell.durationLabel.text = String(timeToTravelMin)
         }
       }
       if let thread = segmentsArray?[indexPath.row]["thread"] as? [String : Any] {
         cell.threadTitleLabel.text = thread["title"] as? String
       }
+
         return cell
     }
 }
