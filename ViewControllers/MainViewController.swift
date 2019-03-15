@@ -137,12 +137,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   }
   
   @IBAction func getTimetablePressed(_ sender: Any) {
-   
-//    if (fromStationCode != nil && toStationCode != nil) {
-//      requestTimetableBetweenStations(fromStationCode: fromStationCode!, toStationCode: toStationCode!)
-//  }
     performSegue(withIdentifier: "toTimetable", sender: self)
-    
   }
   
   

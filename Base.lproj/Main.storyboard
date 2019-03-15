@@ -82,7 +82,6 @@
                                 <state key="normal" title="Get timetable for selected stations"/>
                                 <connections>
                                     <action selector="getTimetablePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bn6-vI-dPb"/>
-                                    <segue destination="RYL-Ca-1bS" kind="show" identifier="toTimetable" id="9Ts-Q5-Ai9"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -119,6 +118,7 @@
                         <outlet property="toStationTextField" destination="RcT-wC-lo1" id="OSG-6N-bPK"/>
                         <segue destination="r7f-Gz-d0Y" kind="show" identifier="selectFromStationSegue" id="0KL-Gw-TJ6"/>
                         <segue destination="r7f-Gz-d0Y" kind="show" identifier="selectToStationSegue" id="9xz-FG-Ua5"/>
+                        <segue destination="RYL-Ca-1bS" kind="show" identifier="toTimetable" id="of2-Q3-vId"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
