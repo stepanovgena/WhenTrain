@@ -15,17 +15,17 @@ class TimetableTableViewCell: UITableViewCell {
   @IBOutlet weak var durationLabel: UILabel!
   @IBOutlet weak var departureTimeLabel: UILabel!
   @IBOutlet weak var threadTitleLabel: UILabel!
+  @IBOutlet weak var blendingView: UIView!
   
   
   override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+    
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+      
     }
-    
 }

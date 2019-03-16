@@ -55,8 +55,14 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gVV-iC-8sz" userLabel="BlendingView">
+                        <rect key="frame" x="0.0" y="0.0" width="327" height="87.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="gVV-iC-8sz" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1Jk-b5-kuq"/>
+                    <constraint firstAttribute="trailing" secondItem="gVV-iC-8sz" secondAttribute="trailing" id="5Vk-sJ-1ga"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zsi-zu-RVa" secondAttribute="trailing" constant="16" id="6jW-c6-uan"/>
                     <constraint firstItem="sep-X1-VRF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="A1X-dI-hG2"/>
                     <constraint firstItem="zsi-zu-RVa" firstAttribute="top" secondItem="sep-X1-VRF" secondAttribute="bottom" constant="8" id="Aya-IH-Slh"/>
@@ -66,12 +72,15 @@
                     <constraint firstItem="sep-X1-VRF" firstAttribute="top" secondItem="3n0-df-Rrt" secondAttribute="bottom" constant="8" id="fbd-TI-vfD"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3n0-df-Rrt" secondAttribute="trailing" constant="16" id="qED-yG-UGx"/>
                     <constraint firstItem="zsi-zu-RVa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="wQE-mi-M1w"/>
+                    <constraint firstAttribute="bottom" secondItem="gVV-iC-8sz" secondAttribute="bottom" id="yg6-9N-Lvu"/>
+                    <constraint firstItem="gVV-iC-8sz" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zD1-qB-kc4"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="sep-X1-VRF" secondAttribute="trailing" constant="16" id="zb3-Mg-K5I"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="arrivalTimeLabel" destination="1Bh-bh-1i4" id="2Z7-R4-z0x"/>
+                <outlet property="blendingView" destination="gVV-iC-8sz" id="gaL-GZ-ttI"/>
                 <outlet property="departureTimeLabel" destination="d4z-DC-hQ5" id="oeh-JQ-YBz"/>
                 <outlet property="durationLabel" destination="Ezt-gJ-0qp" id="Ska-El-bTo"/>
                 <outlet property="threadTitleLabel" destination="zsi-zu-RVa" id="60D-H7-9kx"/>

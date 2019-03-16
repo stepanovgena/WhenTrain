@@ -31,7 +31,7 @@ class SelectStationTableViewController: UITableViewController, UISearchBarDelega
     let sort = NSSortDescriptor(key: #keyPath(Station.settlementTitle), ascending: true)
     fetchRequest.sortDescriptors = [sort]
     
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: nil)
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: "stationsCache")
     
     do {
       try fetchedResultsController.performFetch()

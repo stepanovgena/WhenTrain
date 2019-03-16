@@ -27,9 +27,9 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     fromStationTextField.delegate = self
     fetchStationData()
     circleProgressIndicator.isHidden = true
-    
   }
   
+  /** Fetches, parses and saves Station info to CoreData */
   private func updateStations() {
     
     circleProgressIndicator.isHidden = false
@@ -94,6 +94,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
       task.resume()
   }
   
+  /** Deletes all Station data from Core Data */
   private func batchDeleteStations() {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Station")
     let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -106,12 +107,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
   }
   
+  /** Used for debugging only */
   private func fetchStationData() {
     let fetchRequest: NSFetchRequest<Station> = Station.fetchRequest()
     let sort = NSSortDescriptor(key: #keyPath(Station.settlementTitle), ascending: true)
     fetchRequest.sortDescriptors = [sort]
     
-    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: nil)
+    fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: "settlementTitle", cacheName: "stationsCache")
     
     do {
       try fetchedResultsController.performFetch()
@@ -121,8 +123,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     print("sections in fetched results:")
     print(fetchedResultsController.sections?.count as Any)
   }
-  
-  
   
   @IBAction func getStationsPressed(_ sender: Any) {
     updateStations()
@@ -137,6 +137,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   }
   
   @IBAction func getTimetablePressed(_ sender: Any) {
+    guard (fromStationCode != nil && toStationCode != nil) else { return }
     performSegue(withIdentifier: "toTimetable", sender: self)
   }
   
