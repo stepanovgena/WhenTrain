@@ -24,14 +24,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
     fromStationTextField.delegate = self
     fetchStationData()
     circleProgressIndicator.isHidden = true
   }
   
   /** Fetches, parses and saves Station info to CoreData */
-  private func updateStations() {
-    
+  private func getStations() {
     circleProgressIndicator.isHidden = false
     
     let configuration = URLSessionConfiguration.default
@@ -45,53 +45,55 @@ class MainViewController: UIViewController, UITextFieldDelegate {
       URLQueryItem(name: "lang", value: "ru_RU"),
       URLQueryItem(name: "format", value: "json")
     ]
-        
+    
     let task = session.dataTask(with: urlConstructor.url!) { data, response, error in
       
-      guard let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return }
+      guard let data = data else { return }
       
-      let result = json as! [String : Any]
-      let countries = result["countries"] as? [[String : Any]]
-      let russia = countries?.filter { country in
-        country["title"] as! String == "Россия"
-        }.first
-      let regions = russia?["regions"] as? [[String : Any]]
-      let moscowAndMoscowRegion = regions?.filter { region in
-        region["title"] as! String == "Москва и Московская область"
-        }.first
-      
-      let moscowRegionSettlements = moscowAndMoscowRegion?["settlements"] as! [[String : Any]]
-      
-      for settlement in moscowRegionSettlements {
-      
-        let settlementCode: String = (settlement["codes"] as! [String : Any])["yandex_code"] as? String ?? ""
-        let settlementTitle: String = settlement["title"] as? String ?? ""
-        let stations = settlement["stations"] as! [[String : Any]]
-        
-        for item in stations where (item["transport_type"] as! String == "train") {
-          
-          let station = Station(context: self.managedContext)
-          station.stationTitle = item["title"] as? String
-          station.stationCode = (item["codes"] as! [String : Any])["yandex_code"] as? String
-          station.direction = item["direction"] as? String
-          station.settlementTitle = settlementTitle
-          station.settlementCode = settlementCode
-        }
-      }
       do {
-        try self.managedContext.save()
-      }
-        catch let error as NSError {
-          print("Fetching error: \(error), \(error.userInfo)")
+        let response: Response = try JSONDecoder().decode(Response.self, from: data)
+        let countries = response.countries
+        let russia = countries.filter { country in
+          country.title == "Россия"
+          }.first
+        let regions = russia?.regions
+        let moscowAndMoscowRegion = regions?.filter { region in
+          region.title == "Москва и Московская область"
+          }.first
+        if let moscowRegionSettlements = moscowAndMoscowRegion?.settlements {
+    
+          for settlement in moscowRegionSettlements {
+            let settlementTitle = settlement.title
+            let settlementCode = settlement.codes["yandex_code"]
+            let stations = settlement.stations
+            for station in stations where station.transportType == "train" {
+              let stationCoreData = Station(context: self.managedContext)
+              stationCoreData.settlementTitle = settlementTitle
+              stationCoreData.settlementCode = settlementCode
+              stationCoreData.direction = station.direction
+              stationCoreData.stationCode = station.codes["yandex_code"]
+              stationCoreData.stationTitle = station.title
+            }
+          }
+          do {
+            try self.managedContext.save()
+          }
+          catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+          }
         }
+        
+    } catch let error {
+      print(error)
+      }
       
       DispatchQueue.main.async {
         self.circleProgressIndicator.isHidden = true
       }
-     print("station download completed")
-
-      }
-      task.resume()
+      print("station download completed")
+      
+    }
+    task.resume()
   }
   
   /** Deletes all Station data from Core Data */
@@ -125,7 +127,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
   }
   
   @IBAction func getStationsPressed(_ sender: Any) {
-    updateStations()
+    //updateStations()
+    getStations()
   }
   
   @IBAction func fetchPressed(_ sender: Any) {
