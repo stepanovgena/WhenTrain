@@ -12,7 +12,7 @@ class TimetableTableViewController: UITableViewController {
   
   var fromStationCode: String?
   var toStationCode: String?
-  var segmentsArray: [[String : Any]]?
+  var segmentsArray: [Segments]?
   var backgroundView: UIView?
   var circleProgressIndicator: CircleProgressIndicator?
   let dateFormatter = DateFormatter()
@@ -53,24 +53,30 @@ class TimetableTableViewController: UITableViewController {
     
     let task = session.dataTask(with: urlConstructor.url!) { data, response, error in
       
-      guard let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return }
-      let result = json as! [String : Any]
-      self.segmentsArray = result["segments"] as? [[String : Any]]
-      DispatchQueue.main.async {
-        self.tableView.reloadData() //initially tableView loads empty, needs to be reloaded when fetching complete
-        self.hideLoaderAfterFetchingComplete()
-        
-        //set departure times array to define scrolling position
-        var departureTimesArray: [String] = []
-        for item in self.segmentsArray! {
-          departureTimesArray.append(item["departure"] as! String)
+      guard let data = data else { return }
+      
+      do {
+        let response: SearchResult = try JSONDecoder().decode(SearchResult.self, from: data)
+        self.segmentsArray = response.segments
+        DispatchQueue.main.async {
+          self.tableView.reloadData() //initially tableView loads empty, needs to be reloaded when fetching complete
+          self.hideLoaderAfterFetchingComplete()
+          
+          //set departure times array to define scrolling position
+          var departureTimesArray: [String] = []
+          for segment in self.segmentsArray! {
+            departureTimesArray.append(segment.departure)
+          }
+          let scrollPosition = self.getRowToScrollTo(departureTimesArray: departureTimesArray, dateFormatter: self.dateFormatter)
+          
+          if (scrollPosition != 0) {
+            self.tableView.scrollToRow(at: IndexPath(row: scrollPosition, section: 0), at: .top, animated: true)
+          }
         }
-        let scrollPosition = self.getRowToScrollTo(departureTimesArray: departureTimesArray, dateFormatter: self.dateFormatter)
-        
-        if (scrollPosition != 0) {
-        self.tableView.scrollToRow(at: IndexPath(row: scrollPosition, section: 0), at: .top, animated: true)
-        }
+      } catch {
+        print(error)
       }
+      
     }
     task.resume()
   }
@@ -87,7 +93,7 @@ class TimetableTableViewController: UITableViewController {
       let cell = tableView.dequeueReusableCell(withIdentifier: "segmentCell", for: indexPath) as! TimetableTableViewCell
       
      //parse and set departure time label and waiting time
-      if let departureTimeString = segmentsArray?[indexPath.row]["departure"] as? String {
+      if let departureTimeString = segmentsArray?[indexPath.row].departure {
         let trimmedDepartureTimeString = String(departureTimeString.prefix(5)) //use only HH:mm from HH:mm:ss
         cell.departureTimeLabel.text = trimmedDepartureTimeString
         cell.waitingTimeLabel.text = getWaitingTimeFromDepartureTime(dateFormatter: dateFormatter, departureTime: departureTimeString)
@@ -101,7 +107,7 @@ class TimetableTableViewController: UITableViewController {
       }
       
       //parse and set arrival time label
-      if let arrivalTimeString = segmentsArray?[indexPath.row]["arrival"] as? String {
+      if let arrivalTimeString = segmentsArray?[indexPath.row].arrival {
         let trimmedArrivalTimeString = String(arrivalTimeString.prefix(5))
         cell.arrivalTimeLabel.text = trimmedArrivalTimeString
         let arrivalTimeDate = dateFormatter.date(from: arrivalTimeString)
@@ -114,8 +120,8 @@ class TimetableTableViewController: UITableViewController {
       }
       
       //parse and set thread(route) title
-      if let thread = segmentsArray?[indexPath.row]["thread"] as? [String : Any] {
-        cell.threadTitleLabel.text = thread["title"] as? String
+      if let thread = segmentsArray?[indexPath.row].thread {
+        cell.threadTitleLabel.text = thread.title
       }
         return cell
     }

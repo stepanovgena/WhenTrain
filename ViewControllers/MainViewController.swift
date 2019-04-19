@@ -26,7 +26,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     super.viewDidLoad()
     
     fromStationTextField.delegate = self
-    fetchStationData()
+    //fetchStationData()
     circleProgressIndicator.isHidden = true
   }
   
@@ -107,6 +107,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     } catch let error as NSError {
       print("Fetching error: \(error), \(error.userInfo)")
     }
+    print("All stations removed from CoreData")
   }
   
   /** Used for debugging only */
@@ -122,17 +123,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     } catch let error as NSError {
       print("Fetching error: \(error), \(error.userInfo)")
     }
-    print("sections in fetched results:")
-    print(fetchedResultsController.sections?.count as Any)
   }
   
   @IBAction func getStationsPressed(_ sender: Any) {
-    //updateStations()
     getStations()
-  }
-  
-  @IBAction func fetchPressed(_ sender: Any) {
-    fetchStationData()
   }
   
   @IBAction func batchDeletePressed(_ sender: Any) {

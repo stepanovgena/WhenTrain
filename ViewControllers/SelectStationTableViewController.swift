@@ -38,8 +38,6 @@ class SelectStationTableViewController: UITableViewController, UISearchBarDelega
     } catch let error as NSError {
       print("Fetching error: \(error), \(error.userInfo)")
     }
-    print("sections in fetched results:")
-    print(fetchedResultsController.sections?.count as Any)
   }
   
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

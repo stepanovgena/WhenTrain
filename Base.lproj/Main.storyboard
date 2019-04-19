@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pqo-hG-NoC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pqo-hG-NoC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,13 +23,6 @@
                                 <state key="normal" title="1. Get available stations"/>
                                 <connections>
                                     <action selector="getStationsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D6o-dt-6V7"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="93F-xO-aTm">
-                                <rect key="frame" x="115.5" y="520.5" width="144" height="30"/>
-                                <state key="normal" title="Fetch from CoreData"/>
-                                <connections>
-                                    <action selector="fetchPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yVD-zO-rio"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8y-VV-4CV" customClass="CircleProgressIndicator" customModule="WhenTrain" customModuleProvider="target">
@@ -84,6 +77,12 @@
                                     <action selector="batchDeletePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UR1-aG-7mc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*Данные предоставлены сервисом Яндекс.Расписания" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uwL-ju-k6k">
+                                <rect key="frame" x="32" y="594" width="311" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -93,6 +92,7 @@
                             <constraint firstItem="r8y-VV-4CV" firstAttribute="centerY" secondItem="Zyj-ac-GEj" secondAttribute="centerY" id="9Uh-fT-m7m"/>
                             <constraint firstItem="1gs-0U-vDw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="KeM-x7-wMZ"/>
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1gs-0U-vDw" secondAttribute="trailing" constant="8" symbolic="YES" id="MBU-yH-WNi"/>
+                            <constraint firstItem="uwL-ju-k6k" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="MvZ-DH-Cfm"/>
                             <constraint firstItem="wie-Yg-dPt" firstAttribute="top" secondItem="Gyu-6E-tGA" secondAttribute="bottom" constant="64" id="QG5-p2-G6j"/>
                             <constraint firstItem="1gs-0U-vDw" firstAttribute="top" secondItem="4aR-F1-bhh" secondAttribute="bottom" constant="44" id="RFb-bF-4iO"/>
                             <constraint firstItem="mFg-A7-8kV" firstAttribute="leading" secondItem="4aR-F1-bhh" secondAttribute="trailing" constant="16" id="YY9-dz-9Qq"/>
@@ -102,11 +102,11 @@
                             <constraint firstItem="RcT-wC-lo1" firstAttribute="leading" secondItem="mFg-A7-8kV" secondAttribute="leading" id="fL0-P5-Qee"/>
                             <constraint firstItem="Zyj-ac-GEj" firstAttribute="leading" secondItem="r8y-VV-4CV" secondAttribute="trailing" constant="8" id="fnj-Iu-u9O"/>
                             <constraint firstItem="Gyu-6E-tGA" firstAttribute="top" secondItem="Zyj-ac-GEj" secondAttribute="bottom" constant="16" id="jgI-IY-alR"/>
-                            <constraint firstItem="93F-xO-aTm" firstAttribute="top" secondItem="wie-Yg-dPt" secondAttribute="bottom" constant="32" id="kJ1-dm-uTQ"/>
                             <constraint firstItem="Gyu-6E-tGA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kwV-cm-CPF"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uwL-ju-k6k" secondAttribute="trailing" constant="32" id="myT-Ar-Rp9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mFg-A7-8kV" secondAttribute="trailing" constant="32" id="pIN-cJ-jFk"/>
                             <constraint firstItem="Zyj-ac-GEj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qxf-YS-gEb"/>
-                            <constraint firstItem="93F-xO-aTm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="u77-Mr-gQZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uwL-ju-k6k" secondAttribute="bottom" constant="32" id="skL-IE-ZqM"/>
                             <constraint firstItem="Zyj-ac-GEj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="xen-kQ-Eno"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

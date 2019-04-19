@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: -Structs for retreiving available station list
 struct Response: Codable {
   var countries: [Countries]
 }
@@ -40,4 +41,19 @@ struct StationData: Codable {
     case direction
     case transportType = "transport_type"
   }
+}
+
+//MARK: -Structs for retreiving timetable data
+struct SearchResult: Codable {
+  var segments: [Segments]
+}
+
+struct Segments: Codable {
+  var departure: String
+  var arrival: String
+  var thread: SegmentThread
+}
+
+struct SegmentThread: Codable {
+  var title: String
 }
